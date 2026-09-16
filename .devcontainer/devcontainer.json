@@ -1,0 +1,43 @@
+{
+  "name": "real-estate-referral-platform",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/workspace",
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "24"
+    },
+    "ghcr.io/devcontainers/features/java:1": {
+      "version": "21",
+      "installMaven": false
+    }
+  },
+  "forwardPorts": [3000, 8080, 5432],
+  "portsAttributes": {
+    "3000": {
+      "label": "Frontend (Next.js)",
+      "visibility": "private",
+      "onAutoForward": "notify"
+    },
+    "8080": {
+      "label": "Backend (Spring Boot)",
+      "visibility": "private",
+      "onAutoForward": "notify"
+    },
+    "5432": {
+      "label": "PostgreSQL",
+      "visibility": "private",
+      "onAutoForward": "silent"
+    }
+  },
+  "postCreateCommand": "bash .devcontainer/post-create.sh",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "vscjava.vscode-java-pack",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode"
+      ]
+    }
+  }
+}

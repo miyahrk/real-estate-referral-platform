@@ -1,0 +1,21 @@
+services:
+  app:
+    image: mcr.microsoft.com/devcontainers/base:ubuntu-24.04
+    volumes:
+      - ..:/workspace:cached
+    command: sleep infinity
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: referral_platform
+      POSTGRES_USER: referral_app
+      POSTGRES_PASSWORD: referral_app_dev_password
+    volumes:
+      - referral-platform-db-data:/var/lib/postgresql/data
+
+volumes:
+  referral-platform-db-data:
