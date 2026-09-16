@@ -17,6 +17,11 @@
 ## セットアップ
 
 ```bash
+# 0. 環境変数ファイルを用意（初回のみ、Git管理外）
+cp .env.example .env
+cp backend/src/main/resources/application-local.properties.example backend/src/main/resources/application-local.properties
+# 上記2ファイルの中身を確認・必要なら値を変更する
+
 # 1. DBを起動
 docker compose up -d
 
@@ -32,12 +37,7 @@ npm run dev
 
 ## DB接続情報（ローカル開発用）
 
-- DB名: `referral_platform`
-- ユーザー: `referral_app`
-- パスワード: `referral_app_dev_password`
-- ポート: `5432`
-
-`backend/src/main/resources/application.properties` に設定済み。
+`.env` と `backend/src/main/resources/application-local.properties`（いずれもGit管理外）で管理。値は `docs/dev_environment.md` を参照。
 
 ## 現在の状態
 

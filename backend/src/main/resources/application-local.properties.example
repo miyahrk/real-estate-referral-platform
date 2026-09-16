@@ -1,0 +1,8 @@
+# このファイルを application-local.properties にコピーして値を設定してください
+# （application-local.properties はGit管理外）
+# cp application-local.properties.example application-local.properties
+
+spring.datasource.url=jdbc:postgresql://localhost:5432/referral_platform
+spring.datasource.username=referral_app
+spring.datasource.password=change_me_local_password
+spring.datasource.driver-class-name=org.postgresql.Driver

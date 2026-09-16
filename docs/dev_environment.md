@@ -3,7 +3,7 @@
 **作成日：** 2026-09-16
 **対象マシン：** ローカル開発機（Windows 11 Pro）
 
-> ⚠️ 本ドキュメントに記載のパスワード・接続情報はすべて**ローカル開発専用**です。本番相当の環境にデプロイする際は必ず値を変更し、平文管理（`application.properties`直書き等）をやめて環境変数 / シークレットマネージャーに移行してください。
+> ⚠️ `docs/`配下はGit管理対象のため、本ドキュメントには**実際のパスワード等の値は記載しない**。実際の値は `.env`・`backend/src/main/resources/application-local.properties`（いずれもGit管理外）を参照すること。ここでは「どのファイルに」「どの項目が」入っているかだけを記録する。
 
 ---
 
@@ -32,23 +32,28 @@
 
 ## 2. PostgreSQL（Docker）
 
-`docker-compose.yml`（`platform/`直下）で管理。
+`docker-compose.yml`（`real-estate-referral-platform/`直下）で管理。接続情報は `docker-compose.yml` 内で `.env`（Git管理外、`.env.example`がテンプレート）の変数を参照する構成。
 
-| 項目 | 値 |
-|------|-----|
-| コンテナ名 | `referral-platform-db` |
-| イメージ | `postgres:16-alpine` |
-| ホストポート | `5432` → コンテナ `5432` |
-| DB名 | `referral_platform` |
-| ユーザー名 | `referral_app` |
-| パスワード | `referral_app_dev_password` |
-| データ永続化 | Dockerボリューム `platform_referral-platform-db-data` |
+| 項目 | 値の所在 |
+|------|---------|
+| コンテナ名 | `referral-platform-db`（固定値、`docker-compose.yml`に記載） |
+| イメージ | `postgres:16-alpine`（固定値） |
+| ホストポート | `5432` → コンテナ `5432`（固定値） |
+| DB名 / ユーザー名 / パスワード | `.env`（Git管理外）。テンプレートは `.env.example` |
+| データ永続化 | Dockerボリューム `real-estate-referral-platform_referral-platform-db-data`（コンテナ削除後もデータ保持） |
+
+### 初回セットアップ
+
+```bash
+cd real-estate-referral-platform
+cp .env.example .env   # 値を確認・必要なら変更
+```
 
 ### 起動・停止
 
 ```bash
-cd platform
-docker compose up -d      # 起動
+cd real-estate-referral-platform
+docker compose up -d      # 起動（.envを自動で読み込む）
 docker compose ps         # 状態確認
 docker compose down       # 停止（-v を付けるとデータも削除）
 ```
@@ -63,16 +68,24 @@ docker exec -it referral-platform-db psql -U referral_app -d referral_platform
 
 ## 3. バックエンド（Spring Boot）起動時の注意
 
-- `backend/src/main/resources/application.properties` にDB接続情報（上記の値）を直書き設定済み。
+- DB接続情報は `application.properties` から `spring.config.import=optional:application-local.properties` 経由で読み込む構成に変更済み。実際の値は `backend/src/main/resources/application-local.properties`（Git管理外）に記載。テンプレートは同ディレクトリの `application-local.properties.example`。
 - `spring-boot-starter-security` を依存関係に含めているが、**まだ独自の認証設定（SecurityConfig）は未実装**。
 - そのため現状 `./mvnw spring-boot:run` で起動すると、Spring Bootが自動生成した一時パスワードがコンソールに出力される（例：`Using generated security password: xxxxxxxx`）。
   - ユーザー名は `user` 固定、パスワードは**起動のたびに変わる使い捨て**。
   - これは指示書にある「ワークスペース管理ログイン（メール＋パスワード、`users`テーブル）」とは別物。実際のログイン機能は着手指示書ステップ4で実装予定。
 
+### 初回セットアップ
+
+```bash
+cd real-estate-referral-platform
+cp backend/src/main/resources/application-local.properties.example backend/src/main/resources/application-local.properties
+# 値を確認・必要なら変更（.envと同じ値に揃える）
+```
+
 ### 起動方法
 
 ```bash
-cd platform/backend
+cd real-estate-referral-platform/backend
 ./mvnw spring-boot:run
 # → http://localhost:8080
 ```
@@ -82,7 +95,7 @@ cd platform/backend
 ## 4. フロントエンド（Next.js）起動方法
 
 ```bash
-cd platform/frontend
+cd real-estate-referral-platform/frontend
 npm install   # 初回のみ
 npm run dev
 # → http://localhost:3000
@@ -104,8 +117,8 @@ npm run dev
 
 ## 6. リポジトリ
 
-- 場所：`platform/`（Gitリポジトリのルート）
-- リモート：**未設定**（GitHub等には未接続。ローカルのみ）
+- 場所：`real-estate-referral-platform/`（Gitリポジトリのルート）
+- リモート：**未設定**（ローカルのみ）。GitLabの個人ネームスペースにprivateプロジェクトとして追加予定
 - ブランチ：`main`
 
 ---
@@ -113,3 +126,4 @@ npm run dev
 ## 更新履歴
 
 - 2026-09-16：初版作成（開発環境構築完了時点の状態を記録）
+- 2026-09-16：フォルダ名を `platform/` から `real-estate-referral-platform/` に変更。DB接続情報を `.env` / `application-local.properties`（いずれもGit管理外）に分離し、本ドキュメントから実パスワードの記載を削除

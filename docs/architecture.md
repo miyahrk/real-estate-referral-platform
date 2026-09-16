@@ -1,7 +1,7 @@
 # モジュール構成ドキュメント
 
 **作成日：** 2026-09-16
-**対象：** `platform/` 配下（不動産紹介プラットフォームMVP実装リポジトリ）
+**対象：** `real-estate-referral-platform/` 配下（不動産紹介プラットフォームMVP実装リポジトリ）
 **関連：** `real_estate_referral_platform_kickoff_instructions_20260916.md`
 
 このドキュメントは、開発環境構築フェーズ（着手指示書ステップ0）で作成したモジュールの物理配置・構成・仕組みをまとめたもの。ビジネスロジック（案件CRUD・認証等）はまだ実装しておらず、各フレームワークの初期スケルトンの状態。
@@ -11,7 +11,7 @@
 ## 1. 全体構成
 
 ```
-platform/                          ← Gitリポジトリのルート
+real-estate-referral-platform/    ← Gitリポジトリのルート
 ├── frontend/                      ← Next.js（画面）
 ├── backend/                       ← Spring Boot（API）
 ├── docs/                          ← このドキュメント一式
@@ -79,7 +79,9 @@ backend/
 ├── src/main/java/com/miyazaki/realestate/referral/
 │   └── ReferralPlatformApplication.java   ← エントリポイント（@SpringBootApplication）
 ├── src/main/resources/
-│   └── application.properties             ← DB接続・サーバーポート設定
+│   ├── application.properties                        ← サーバーポート等の共通設定
+│   ├── application-local.properties.example          ← DB接続情報のテンプレート（Git管理対象）
+│   └── application-local.properties                  ← DB接続情報の実値（Git管理外）
 ├── src/test/java/.../ReferralPlatformApplicationTests.java
 ├── pom.xml                                ← Maven依存関係定義
 ├── mvnw / mvnw.cmd                        ← Maven Wrapper（Maven本体インストール不要で実行可）
@@ -112,7 +114,7 @@ backend/
 ### 仕組み・現状の挙動
 
 - `ReferralPlatformApplication` の `@SpringBootApplication` により、`com.miyazaki.realestate.referral` パッケージ配下を自動スキャン。今後 `controller` / `service` / `repository` / `entity` 等のサブパッケージを作成すれば自動的に認識される。
-- `application.properties` でPostgreSQL接続先を固定値指定（`docs/dev_environment.md` 参照）。
+- `application.properties` は `spring.config.import=optional:application-local.properties` でDB接続情報を外部化。実値は`application-local.properties`（Git管理外）に記載（`docs/dev_environment.md` 参照）。
 - `spring.jpa.hibernate.ddl-auto=validate` に設定済み。これは「Hibernateにテーブルを自動生成させず、既存スキーマとの整合性チェックのみ行う」設定。→ **DBスキーマは手動のマイグレーションファイルで管理する方針**（着手指示書ステップ1）のための準備。現時点ではEntityクラスが1つも無いため、このプロパティは実質何もしていない。
 - `spring-boot-starter-security` が依存関係に入っているため、Spring Bootの自動設定により**全エンドポイントがデフォルトで認証必須**になっており、起動毎にランダムパスワードが発行される（`docs/dev_environment.md` 3章参照）。独自のログイン機構（`users`テーブル＋メール/パスワード）を実装する際に、この自動設定を上書きするカスタム`SecurityConfig`が必要になる。
 
@@ -133,9 +135,9 @@ services:
     image: postgres:16-alpine
     container_name: referral-platform-db
     environment:
-      POSTGRES_DB: referral_platform
-      POSTGRES_USER: referral_app
-      POSTGRES_PASSWORD: referral_app_dev_password
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
       - "5432:5432"
     volumes:
@@ -143,6 +145,7 @@ services:
 ```
 
 - サービスは`postgres`の1つのみ。frontend/backendはDocker化せず、開発中はホストマシン上で直接 `npm run dev` / `mvnw spring-boot:run` を実行する構成（ホットリロードを活かすため）。
+- `POSTGRES_*` の実値は `.env`（Git管理外、リポジトリ直下）から読み込む。テンプレートは `.env.example`。
 - `volumes`でコンテナを消してもデータが残るようにしている（`docker compose down -v`で完全削除）。
 
 ---
@@ -160,10 +163,13 @@ services:
 
 | ファイル | 場所 | 役割 |
 |---------|------|------|
-| `.claude/launch.json` | `03_Business/`（リポジトリ外、プロジェクトルート） | Claude Codeのブラウザプレビュー機能からNext.js devサーバーを起動するための設定。`npm --prefix Website/Real_Estate_Business/platform/frontend run dev` を実行する構成 |
+| `.claude/launch.json` | `03_Business/`（リポジトリ外、プロジェクトルート） | Claude Codeのブラウザプレビュー機能からNext.js devサーバーを起動するための設定。`npm --prefix Website/Real_Estate_Business/real-estate-referral-platform/frontend run dev` を実行する構成 |
+| `.env.example` | リポジトリ直下 | `.env`（Git管理外）のテンプレート。Postgres接続情報 |
+| `backend/src/main/resources/application-local.properties.example` | `backend/src/main/resources/` | `application-local.properties`（Git管理外）のテンプレート。Spring Boot用DB接続情報 |
 
 ---
 
 ## 更新履歴
 
 - 2026-09-16：初版作成（開発環境構築完了時点のスケルトン構成を記録）
+- 2026-09-16：フォルダ名を `platform/` から `real-estate-referral-platform/` に変更。DB接続情報を`.env`/`application-local.properties`（Git管理外）に外部化
