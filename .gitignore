@@ -15,6 +15,9 @@ backend/src/main/resources/application-local.properties
 .env
 .env.local
 
+# Docs are managed outside this repo (Real_Estate_Business/docs/)
+/docs/
+
 # IDE
 .idea/
 *.iml
