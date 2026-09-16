@@ -1,0 +1,16 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: referral-platform-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: referral_platform
+      POSTGRES_USER: referral_app
+      POSTGRES_PASSWORD: referral_app_dev_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - referral-platform-db-data:/var/lib/postgresql/data
+
+volumes:
+  referral-platform-db-data:
