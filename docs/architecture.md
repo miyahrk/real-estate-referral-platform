@@ -154,8 +154,11 @@ services:
 
 | ファイル | 内容 |
 |---------|------|
-| `dev_environment.md` | インストール済みツール・バージョン・パス・DB接続情報・起動手順 |
+| `real_estate_referral_platform_kickoff_instructions_20260916.md` | 着手指示書（企画・実装範囲の元ネタ。`Real_Estate_Business/`直下から移動） |
+| `real_estate_referral_platform_mvp_scope_20260916.md` | MVPスコープ定義書（同上） |
+| `dev_environment.md` | インストール済みツール・バージョン・パス・起動手順（実パスワードは非記載） |
 | `architecture.md`（本ファイル） | モジュール構成・技術選定理由・仕組み |
+| `work_log_20260916.md` | 日次の作業ログ |
 
 ---
 

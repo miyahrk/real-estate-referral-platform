@@ -1,12 +1,13 @@
 # 不動産紹介プラットフォーム（MVP）
 
-`real_estate_referral_platform_kickoff_instructions_20260916.md` に基づく実装リポジトリ。
+`docs/real_estate_referral_platform_kickoff_instructions_20260916.md` に基づく実装リポジトリ。
 
 ## 構成
 
 - `frontend/` — Next.js（App Router）+ TypeScript + Tailwind CSS
 - `backend/` — Spring Boot（Java 21）+ Spring Data JPA + PostgreSQL
 - `docker-compose.yml` — 開発用PostgreSQL
+- `docs/` — 企画書・環境ドキュメント・作業ログ一式（詳細は `docs/architecture.md` の5章）
 
 ## 前提環境
 
@@ -37,7 +38,7 @@ npm run dev
 
 ## DB接続情報（ローカル開発用）
 
-`.env` と `backend/src/main/resources/application-local.properties`（いずれもGit管理外）で管理。値は `docs/dev_environment.md` を参照。
+`.env` と `backend/src/main/resources/application-local.properties`（いずれもGit管理外）で管理。実際の値はこの2ファイルを直接開いて確認する（`docs/dev_environment.md`には記載しない方針。理由は同ファイル冒頭を参照）。
 
 ## 現在の状態
 
