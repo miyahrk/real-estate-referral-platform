@@ -1,0 +1,8 @@
+package com.miyazaki.realestate.referral.repository;
+
+import com.miyazaki.realestate.referral.entity.Lead;
+import java.util.UUID;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface LeadRepository extends JpaRepository<Lead, UUID> {
+}
