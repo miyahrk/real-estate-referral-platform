@@ -2,6 +2,7 @@ import Link from "next/link";
 import { siteConfig } from "@/lib/site-config";
 
 const navLinks = [
+  { href: "/company", label: "会社概要" },
   { href: "/cases", label: "事例紹介" },
   { href: "/blog", label: "ブログ" },
   { href: "/links", label: "参考リンク" },

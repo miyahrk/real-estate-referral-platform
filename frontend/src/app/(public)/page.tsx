@@ -169,34 +169,20 @@ export default function LandingPage() {
 
       {/* About the company */}
       <section className="bg-stone-50 px-4 py-20 sm:px-6">
-        <div className="mx-auto max-w-3xl">
-          <h2 className="text-center font-serif text-2xl font-bold text-brand-navy">
+        <div className="mx-auto max-w-2xl text-center">
+          <h2 className="font-serif text-2xl font-bold text-brand-navy">
             運営会社について
           </h2>
-          <div className="mt-10 space-y-6 text-sm text-stone-600">
-            <p>
-              当サービスは、不動産投資に関心のある方と、審査済みの不動産営業・会社を
-              つなぐマッチングサービスとして運営しています。
-            </p>
-            <dl className="grid gap-4 sm:grid-cols-2">
-              <div>
-                <dt className="font-semibold text-brand-navy">会社名</dt>
-                <dd>準備中</dd>
-              </div>
-              <div>
-                <dt className="font-semibold text-brand-navy">所在地</dt>
-                <dd>準備中</dd>
-              </div>
-              <div>
-                <dt className="font-semibold text-brand-navy">設立</dt>
-                <dd>準備中</dd>
-              </div>
-              <div>
-                <dt className="font-semibold text-brand-navy">事業内容</dt>
-                <dd>不動産紹介マッチングサービスの運営</dd>
-              </div>
-            </dl>
-          </div>
+          <p className="mt-4 text-sm text-stone-600">
+            当サービスは、不動産投資に関心のある方と、審査済みの不動産営業・会社を
+            つなぐマッチングサービスとして運営しています。
+          </p>
+          <Link
+            href="/company"
+            className="mt-6 inline-block rounded-full border border-brand-navy/30 px-6 py-2 text-sm font-semibold text-brand-navy hover:bg-brand-navy/5"
+          >
+            会社概要を見る
+          </Link>
         </div>
       </section>
 
