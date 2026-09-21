@@ -1,22 +1,23 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* ウォームな自然素材（クリーム・石・土）を思わせるアーストーン */
+  --background: #faf6ef;
+  --foreground: #2b2620;
+  --brand-navy: #2f3d33;
+  --brand-navy-light: #46574a;
+  --brand-accent: #b56a45;
 }
 
 @theme inline {
   --color-background: var(--background);
+  --color-brand-navy: var(--brand-navy);
+  --color-brand-navy-light: var(--brand-navy-light);
+  --color-brand-accent: var(--brand-accent);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
+  --font-serif: var(--font-shippori-mincho);
   --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
 }
 
 body {

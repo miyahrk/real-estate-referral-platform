@@ -1,0 +1,12 @@
+import PublicHeader from "@/components/PublicHeader";
+import PublicFooter from "@/components/PublicFooter";
+
+export default function PublicLayout({ children }: LayoutProps<"/">) {
+  return (
+    <div className="flex min-h-full flex-1 flex-col">
+      <PublicHeader />
+      <main className="flex-1">{children}</main>
+      <PublicFooter />
+    </div>
+  );
+}
