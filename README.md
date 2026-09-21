@@ -1,6 +1,6 @@
 # 不動産紹介プラットフォーム（MVP）
 
-`../docs/real_estate_referral_platform_kickoff_instructions_20260916.md` に基づく実装リポジトリ。
+`../docs/real_estate_referral_platform_kickoff_instructions.md` に基づく実装リポジトリ。
 
 ## 構成
 
